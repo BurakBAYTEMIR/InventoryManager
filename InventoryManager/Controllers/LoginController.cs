@@ -1,11 +1,13 @@
 ﻿using System.Threading.Tasks;
 using InventoryManager.Entities.Concrete;
 using InventoryManager.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryManager.UI.Controllers
 {
+    [AllowAnonymous]
     public class LoginController : Controller
     {
         private readonly SignInManager<AppUser> _signInManager;
@@ -31,6 +33,12 @@ namespace InventoryManager.UI.Controllers
             }
 
             return View();
+        }
+
+        public async Task<IActionResult> LogOut()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Login");
         }
     }
 }

@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using InventoryManager.DataAccess.Concrete;
 using InventoryManager.Entities.Concrete;
 using InventoryManager.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace InventoryManager
 {
@@ -31,6 +33,19 @@ namespace InventoryManager
                 AddEntityFrameworkStores<Context>().
                 AddErrorDescriber<CustomIdentityValidator>();
             services.AddControllersWithViews();
+
+            services.AddMvc(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Login/Index/";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,7 +63,7 @@ namespace InventoryManager
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseAuthentication();
             app.UseRouting();
 
             app.UseAuthorization();
