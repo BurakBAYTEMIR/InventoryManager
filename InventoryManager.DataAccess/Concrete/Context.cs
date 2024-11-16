@@ -13,7 +13,7 @@ namespace InventoryManager.DataAccess.Concrete
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=BAYTE;database=DbInventoryManager;integrated security=true");
+            optionsBuilder.UseSqlServer("Server=KendiServerAdresiniziGiriniz;database=DbInventoryManager;integrated security=true");
         }
 
         public DbSet<Product> Products { get; set; }
